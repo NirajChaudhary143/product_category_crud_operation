@@ -41,16 +41,22 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id){
+        $request->validate(
+            [
+                'category'=>'required',
+                'name'=>'required',
+            ]
+            );
         $product = Product::with('category')->where('product_id', $id)->first();
         $product->product_name=$request['name'];
         $product->category_id=$request['category'];
         // echo ($product->category_id);
-        echo "<pre>";
-        print_r($product->toArray());
-        // $res= $product->save();
-        // if($res){
-        //     return view('/')->with('success','Product Edited Succefully');
-        // }
+        // echo "<pre>";
+        // print_r($product->toArray());
+        $res= $product->save();
+        if($res){
+            return redirect('/')->with('success','Product Edited Succefully');
+        }
         // else{
         //     return redirect()->back();
         // }
@@ -60,9 +66,15 @@ class ProductController extends Controller
 
      public function deleteProduct($id){
         $products= Product::find($id);
+        $product = Product::with('category')->get();
+        $category= Category::with('products')->get();
         if($products){
-            $products->delete;
-            return view('/');
+            $products->delete();
+            return redirect('/')->with(compact('products'))->with('success', 'Product Deleted Successfully');
+        }
+        else{
+            return redirect('/')->with(compact('products'))->with('fail', 'The id you entered is not in the database');
+    
         }
     }
 }

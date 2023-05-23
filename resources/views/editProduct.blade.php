@@ -11,7 +11,7 @@
     @csrf
     <input type="text" placeholder="Enter Product Name" name="name" value="{{$product->product_name}}"><br>
     <label for="">Category</label>
-    <select name="categroy" id="">
+    <select name="category" id="">
         
     <option value="1" {{ $product->category_id == 1 ? 'selected' : '' }}>
     Fruits
@@ -22,7 +22,7 @@
 
     </select>
     <br>
-    <input type="submit" value="Add Product">
+    <input type="submit" value="Update">
 </form>
 
 </body>
